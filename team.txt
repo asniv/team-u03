@@ -2,8 +2,10 @@ Akash Nivarthi {asnivarthi723@utexas.edu}
 Akash Nivarthi {senior}
 Akash Nivarthi My interests include {making music, drawing, acting}
 Akash Nivarthi I am committed to me and my team members learning Python
-
 Grace Yuan {graceyuan@utexas.edu}
 Grace Yuan {senior}
 Grace Yuan My interests include {crocheting, anime, art}
 Grace Yuan I am committed to me and my team members learning Python
+
+
+
