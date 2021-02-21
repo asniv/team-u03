@@ -26,6 +26,21 @@ The alphabetical lists should be CASE SENSITIVE so in a list containing apple an
 def MeetMyTeam():
     # read file and store in list for adjustment
     f = open('team.txt', 'r') # open text file
-    t = list(f) # store contents of team file as a list before we finalize formatting
-
+    
+    for i+3 in range(len(t)): # first line for each person has three more lines below it
+        # read name up to second space (after last name)
+        # append each name to a list with first and last name in separate cells
+        
+        # create list of interests for current person
+        # append each person's interest list to a comprehensive list
+    
+    name_list_sorted = sorted(name_list, key = lambda x: x[0], reverse = False) # sort team members by first name
+    
+    
+    # print('Number of team members:', )
+    # print('Number of team members committed to helping the team learn python:', )
+    # print('Their collective list of interests in alphabetical order include:', )
+    # print('Team members in alphabetical order:',)
+    
+    
 MeetMyTeam()
