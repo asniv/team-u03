@@ -1,0 +1,2 @@
+# Hello! Welcome to Team TrainData's Lightning Talk on the library scikit-learn.
+# You can follow along with our demonstration using the .csv file that we've linked in this folder.
