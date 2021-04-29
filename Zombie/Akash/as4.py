@@ -77,7 +77,7 @@ class PlayerCharacter(ICharacter):
             
             # print('epic:', self.getScanResults()[0])
         # if len(self.getScanResults()) > 0:
-
+            
             # Store the ID and position of each scanned zombie
             positions = [ re.findall('\d', str(res))
                           for res in self.getScanResults() ]
@@ -93,9 +93,9 @@ class PlayerCharacter(ICharacter):
             # (default ascending down the list)
             positions.sort(key = lambda x: x[3])
             
-            print('yo i can see zombie', positions[0][0])
+            print('yo i can see zombie', positions[0][0]) # shows the ID of the nearest zombie in the scan
             
-            self.sc.since_counter[0] = -1 # note that this ended with an Attack
+            self.sc.since_counter[0] = -1 # tell the Since Counter to that this ended with an Attack
             return AttackEvent(self, positions[0][0])
             
             
