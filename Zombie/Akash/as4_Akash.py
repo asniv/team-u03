@@ -84,7 +84,7 @@ class PlayerCharacter(ICharacter):
             
             # Append Manhattan distance to each row
             for row in positions:
-                row[0] = int(row[0])
+                row[0] = int(row[0]) # convert extracted string of zombie ID to int
                 row[1] = abs(int(row[1]) - x) # x-Manhattan displacement from Player to Zombie
                 row[2] = abs(int(row[2]) - y) # y-Manhattan displacement from Player to Zombie
                 row.append(sum(row[1:3])) # Add total Manhattan distance
@@ -95,7 +95,7 @@ class PlayerCharacter(ICharacter):
             
             print('yo i can see zombie', positions[0][0]) # shows the ID of the nearest zombie in the scan
             
-            self.sc.since_counter[0] = -1 # tell the Since Counter to that this ended with an Attack
+            self.sc.since_counter[0] = -1 # tell the Since Counter to note that this ended with the Player making an Attack
             return AttackEvent(self, positions[0][0])
             
             
