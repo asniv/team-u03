@@ -50,7 +50,7 @@ class PlayerCharacter(ICharacter):
         # Need to Scan for the first time
         # Otherwise the rest of the program, ScanEvent if we've just done a MoveEvent
         if (self.ctr.rounds[0] == 1) or (self.ctr.rounds[3] == 1):
-            print('SCAN 53!')
+            # print('SCAN 53!')
             self.ctr.reset_round('scan') # note that we're doing a ScanEvent
             return ScanEvent(self)
         
@@ -95,7 +95,7 @@ class PlayerCharacter(ICharacter):
         # If health is below a safe level, given zombie proximity, then HealEvent
         if (self.getHealth() <= damage_threshold) and (self.ctr.events[2] <= 5): # If player health is below the safe threshold
             self.ctr.reset_round('heal')
-            print('HEAL 99!')
+            # print('HEAL 99!')
             return HealEvent(self)
         
         
@@ -108,7 +108,7 @@ class PlayerCharacter(ICharacter):
                     
                     if self.getHealth()*id_pos[0][1] > 0.05: # If the damage we'll inflict is higher than the user-defined threshold
                         self.ctr.reset_round('attack') # note that we're doing an AttackEvent
-                        print('ATTACK 111!')
+                        # print('ATTACK 111!')
                         return AttackEvent(self, id_pos[0][1]) # then AttackEvent
                     # else: # Else, if our damage is not high enough
                     # # (but it's still been at most 2 rounds since last ScanEvent and we saw a zombie)
@@ -123,80 +123,15 @@ class PlayerCharacter(ICharacter):
                     x, y = obj_pos
                     x_off, y_off = self.dam.movement(map_view, obj_pos)
                     self.ctr.reset_round('move') # note that we're doing a MoveEvent
-                    print('MOVE 123!')
+                    # print('MOVE 123!')
                     return MoveEvent(self, x + x_off, y + y_off) # then MoveEvent
             
             # Else, if it's been more than 2 rounds since last ScanEvent (but we see no zombie), then ScanEvent
             else:
                 self.ctr.reset_round('scan') # note that we're doing a ScanEvent
-                print('SCAN 129!')
+                # print('SCAN 129!')
                 return ScanEvent(self) # then ScanEvent
-            #     # elif self.ctr.rounds[4]: 
-            # # print('AWAWAWAWAWAWA')
-            
-            #     # if self.ctr.rounds[4] > 2: # and it's been over 2 rounds since last Scan
-
-            #     else: # Else, if there's no visible zombie and last ScanEvent was over 2 rounds ago, then do ScanEvent now
-            #         self.ctr.reset_round('scan') # note that we're doing a ScanEvent
-            #         print('SCAN 129!')
-            #         return ScanEvent(self) # then ScanEvent
-            
-        
-        # # prob = random.random()
-        # # hi = ZombieHunter.heal_count() in main
-        
-        # obj_pos_x, obj_pos_y = self.getPos()
-        
-        # Scanning
-
-        # if len(scan_results) >= 1:
-            
-            # print('epic:', self.getScanResults()[0])
-        # if len(self.getScanResults()) > 0:
-
-            # Store the ID and position of each scanned zombie
-            # positions = [ re.findall('\d', str(res))
-            #               for res in self.getScanResults() ]
-            
-            # Store list of zombie IDs and positions: [ID, (x, y)]
-        # scan_results = self.getScanResults()
-        # id_pos = self.dam.calc(scan_results, obj_pos)
-            
-            # id_pos = [] # initialize
-            # for target_obj in scan_results: # for each scanned zombie
                 
-            #     target_id = target_obj.getID() # get target's ID
-            #     print('fam look it\'s zombie', target_id)
-            #     target_pos_x, target_pos_y = target_obj.getPos() # get target's position
-            #     dist = math.hypot(obj_pos_x - target_pos_x, obj_pos_y - target_pos_y) # get distance from attacker to target
-            #     scale_factor = 1.0 / math.exp(dist) # get normalized distance from attacker to target (scale factor for attack damage)
-            #     attack_exp = math.exp(-scale_factor) # calculate projected damage exponential factor distance from target
-            #     id_pos.append([target_id, attack_exp]) # append the current target ID and projected attack damage to the collection
-                
-            # id_pos.sort(key = lambda x: x[1], reverse=True) # sort list from highest to lowest attack scale factor
-            
-        # # Attack every 2 rounds
-            # if self.ctr.rounds[0]-1 % 2 == 0:
-            #     self.ctr.reset_round('attack')
-            #     return AttackEvent(self, targetID)
-        
-
-        
-        # # Scanning every 10 rounds
-        # if self.ctr.round_number() % 10 == 0: # scan on every 5th round
-        
-        # self.ctr.since_counter[2] = -1 # note that this ended with a Scan
-        # return ScanEvent(self) # scan the area
-        
-        # if len(id_pos) == 0: # If there are any zombies on the ScanData
-            # if round_counter % 5 == 0:
-        
-        print('WOOOOOOOOOOOOOOOOO')
-        
-        # print('loooool:', self.health)
-        # # pass
-    
-    
     
     ## Mind Palace
         
@@ -233,7 +168,7 @@ class PlayerCharacter(ICharacter):
             if event == 'heal':
                 self.events[2] += 1
                 self.rounds[2] = 0
-                print('UHHH')
+                # print('UHHH')
             if event == 'move':
                 self.events[3] += 1
                 self.rounds[3] = 0
@@ -266,13 +201,13 @@ class PlayerCharacter(ICharacter):
                 
                 target_id = target.getID() # get target's ID
                 # print('zombie_health:', target_id.getHealth())
-                print('fam look it\'s zombie', target)
+                # print('fam look it\'s zombie', target)
                 target_pos_x, target_pos_y = target.getPos() # get target's position
                 obj_pos_x, obj_pos_y = obj_pos
                 dist = math.hypot(obj_pos_x - target_pos_x, obj_pos_y - target_pos_y) # get distance from attacker to target
                 scale_factor = 1.0 / math.exp(dist) # attack damage scale factor
                 id_pos.append([target_id, scale_factor]) # append the current target ID and damage scale factor to the collection
-                print('!!!', target_id)
+                print('We can see Zombie {}'.format(target_id))
                 
             id_pos.sort(key = lambda x: x[1], reverse=True) # sort list from highest to lowest attack scale factor
             
@@ -302,52 +237,3 @@ class PlayerCharacter(ICharacter):
                 y_off = 0 # don't move in the Y-direction
                 
             return (x_off, y_off) # return the x and y offsets
-            
-            # x_off, y_off = 4, 4 # initialize offset in x- and y-coordinates
-            # # start with invalid offsets to initialize while loop
-
-            # # Check the bounds
-            # # map_view = map_view # 
-            # size_x, size_y = map_view.getMapSize() # get the dimensions of the map
-            # x, y = obj_pos # get the player's current position
-            
-            # while abs(x_off) + abs(y_off) > 3: # while the sum of the offsets is invalid
-            #     x_off = random.randint(-3, 3) # randomly select a valid x-offset
-            #     y_off = random.randint(-3, 3) # randomly select a valid y-offset
-            #     # print('hey:', abs(x_off)+abs(y_off))
-            #     if (abs(x_off) + abs(y_off) <= 3) and (): # if the sum is valid
-            #         continue # then leave the while loop and continue
-    
-
-
-            # if x + x_off < 0 or x + x_off >= size_x: # ff the 
-            #     x_off = 0
-            # if y + y_off < 0 or y + y_off >= size_y:
-            #     y_off = 0
-                
-            # return (x_off, y_off)
-        
-        
-
-        
-        
-                
-        # def add_since_attack(self):
-        #     self.round_counter += 1``
-            
-        # def stab(self):
-        #     self.attack_toggle = 0
-    
-        # def his_score(self):
-        #     self.hiswins += 1
-    
-        # @property
-        # def best (self):
-        #     return max ( [self.mywins, self.hiswins] )
-            
-        # def __str__(self):
-        #     return 'oh yeah dab on em {}'.format(self.round_counter)
-        
-    # def __str__(self):
-        # return 'bruuuuh'+
-        # pass
