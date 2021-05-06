@@ -3,7 +3,7 @@ M E 369P project team U03 (Spring 2021)
 
 Our program examines a set of COVID vaccination data in US states and federal entities. The dataset can be found here: https://github.com/owid/covid-19-data/tree/master/public/data/vaccinations. Important columns to mention are date, location, share_doses_used, and people_vaccinated_per_hundred. share_doses_used defines the share of vaccination doses administered among those recorded as shipped and people_vaccinated_per_hundred_ represents the total number of people (out of 100) who received at least one vaccine dose.
 
-Packages need to run our code include:
+Packages needed to run our code include:
 
 * Numpy
 * Pandas
