@@ -16,7 +16,7 @@ To run our program:
 
 1. Open the 'Vaccine' folder in the repoisitory above or use https://github.com/asniv/team-u03/tree/main/Vaccine
 2. Open the 'Notebooks' folder.
-3. Run ### file.
+3. Download and run our 'vaccine_projector.py' file.
 
 From here, you will be able to observe various vaccination trends.
 
