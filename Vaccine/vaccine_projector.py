@@ -10,7 +10,17 @@ from sklearn.linear_model import LinearRegression # to predict linear forecasts
 ## Prepare the dataframe for analysis
 
 def clean_df(df_owid_orig):
+    '''
+    Clean the Pandas Dataframe according to our procedure.
+    We indexed the Dataframe by state and date to easily access each day's data.
     
+    Input:
+        df_owid_org: the original, unaltered dataset
+    Output:
+        df_owid: the cleaned dataset for analysis
+        ListofCols: a selection of the columns we used in the analysis
+            Our selections were 'share_doses_used' and 'people_vaccinated_per_hundred'
+    '''    
     # Work with a copy, not the original dataset
     df_owid = df_owid_orig.copy()
     
@@ -36,6 +46,18 @@ def clean_df(df_owid_orig):
 ## Get user input of US states to examine
     
 def getStateInput(df_owid):
+    '''
+    Select a group of states to view their vaccine administration data.
+    The program prefers the state name as a string, spelled correctly, case insensitive
+    
+    Input:    
+        df_owid: the cleaned dataset for our analysis purposes
+        User inputs for:
+            state: each individual state to collect; stops collecting when user enteres "done"
+    Output:
+        ListofStates       
+    '''
+    
     
     ListofStates = []
     state_input = ''
@@ -61,61 +83,22 @@ def getStateInput(df_owid):
     return ListofStates
     
 
-## Plot actual data only
-
-# def plotStateActual(df_owid, ListofStates, ListofCols):
-    
-#     ## For trial, test with these lists:
-#     # ListofStates = ['Alabama', 'Texas', 'New York State']
-#     # ListofCols = ['share_doses_used', 'people_vaccinated_per_hundred']
-    
-#     print('\nGenerating plot of \ndata: {} \nfor \nstates: {}'.format(
-#         '"'+'" and "'.join(ListofCols)+'"', ', '.join(ListofStates)))
-    
-#     fig = []
-    
-#     fig = make_subplots(rows=len(ListofCols)+1,
-#                         cols=1,
-#                         shared_xaxes=True,
-#                         subplot_titles=['Efficiency of Vaccine Administration',
-#                                        'Path to Herd Immunity (Goal: 70-90%)'])
-    
-#     for col_idx, col in enumerate(ListofCols):
-        
-#         col_pred = ListofCols_pred[col_idx]
-        
-#         for state in ListofStates:
-#             data = go.Scatter(x=df_owid.loc[state]['datetime'], y=df_owid.loc[state][col], name=state+' '+col)
-#             fig.add_trace(data, row=col_idx+1, col=1)
-            
-#     fig.update_layout(hovermode='x')
-#     fig.update_layout(
-#         # autosize=True,
-#         # width=1000,
-#         height=3000,
-#         margin=dict(
-#         #     l=50,
-#         #     r=50,
-#             b=5,
-#             t=5,
-#             pad=100
-#         ))
-#     # fig.update_xaxes(title_text="Date", row=1, col=1)
-#     # fig.update_xaxes(title_text="Date", row=2, col=1)
-#     fig.update_yaxes(title_text="(Doses used)/(doses shipped)", row=1, col=1)
-#     fig.update_yaxes(title_text="% of state population\nvaccinated at least once", row=2, col=1)
-#     # fig.show()
-    
-#     fig_actual = fig
-    
-#     plotly.offline.plot(fig_actual)
-    
-#     return fig_actual
-
-## Plot actual state data, with option to also plot stat projected values
+## Plot actual data, along with prediction if included
 
 def plotStates(df_owid, ListofStates, ListofCols, **kwargs):
+    '''
+    Uses Plotly package to create a color-coded interactive space with two vertically stacked subplots
+    User can click on legend entries to show and hide different data
     
+    Input:
+        df_owid: the prepared dataset
+        ListofStates = the list of US states from the user input
+        ListofCols = the list of columns to display and forecast
+        **kwargs:
+            Open to include variable Y_pred, i.e. the forecast data
+    Output:
+        fig: The generated figure, which the function displays using plotly.offline.plot(fig)
+    '''
     ## For trial, test with these lists:
     # ListofStates = ['Alabama', 'Texas', 'New York State']
     # ListofCols = ['share_doses_used', 'people_vaccinated_per_hundred']
@@ -148,14 +131,14 @@ def plotStates(df_owid, ListofStates, ListofCols, **kwargs):
             
     fig.update_layout(hovermode='x')
     fig.update_layout(
-        # autosize=True,
+        autosize=True,
         # width=1000,
         height=3000,
         margin=dict(
         #     l=50,
         #     r=50,
-            b=5,
-            t=5,
+            b=0,
+            t=50,
             pad=100
         ))
     # fig.update_xaxes(title_text="Date", row=1, col=1)
@@ -172,7 +155,22 @@ def plotStates(df_owid, ListofStates, ListofCols, **kwargs):
 ## Select Dates for Forecast - End date for training and end date for forecast
 
 def getForecastDates():
-    
+    '''
+    Prompts user for dates to use in the linear forecast
+    Input:
+        User inputs: dates in format "Month Day, Year"
+            train_date_end: end date to train forecast
+                Tells predictor to observe the trend until this date
+            train_date_start: optional start date for training
+                Tells predictor to observe trends after this date
+                If user inputs "no", this defaults to January 12, 2021, the beginning of the date index for most states
+            forecast_date_end: last day to forecast with the predictor
+                The predictor performs a forecast from train_date_end to forecast_end_date
+    Output:
+        train_date_start
+        train_date_end
+        forecast_date_end
+    '''    
     ## Select End Date for Forecast Training
     
     # Limit the dates that the user can input
@@ -273,6 +271,14 @@ def getForecastDates():
 ## Perform linear regression on training data
 
 def getLinreg(X_trn, y_trn):
+    '''
+    Simple linear regression model using scikit-learn.linear_model.LinearRegression
+    Input:
+        X_trn: training features; inputs for the model
+        y_trn: training targets; the target values for the model to learn the relationship between X and y
+    Output:
+        mdl: the linear regression model, fit to the set of training data
+    '''    
     mdl = LinearRegression()
     mdl.fit(X_trn, y_trn)
     
@@ -282,106 +288,78 @@ def getLinreg(X_trn, y_trn):
 ## Forecast the selected columns' data using the train date limit and forecast span
 
 def forecaster(df_owid, train_date_start, train_date_end, forecast_date_end, ListofStates, ListofCols):
-    
+    '''
+    Forecasts trend as a linear regression, using the point at 'train_date_end' as the start, predicting for dates up to 'forecast_date_end'
+    Input:
+        df_owid: the prepared Dataframe
+        train_date_start: left bound for learning vaccination trends 
+        train_date_end: right bound for learning vaccination trends
+        forecast_date_end: end date for the forecast based on the model
+        ListofStates: list of states from user input
+        ListofCols: list of columns of data to examine and predict
+    Output:
+        Y_pred: new Dataframe with forecasted data for dates in range from train_date_end to forecast_date_end
+        ListofCols_pred: names of new columns, in this case just the existing ones with "PRED_" added to the beginning
+    '''
     forecast_dates = pd.date_range(train_date_end, forecast_date_end)
     days_ahead = len(forecast_dates)
     ListofCols_pred = [ 'PREDICTED'+' '+col for col in ListofCols ]
     
+    ## Initialize an empty Dataframe to receive the predicted data
+    # Create a column to receive projected data for each column, then combine by state
     Y_pred_state = []
     for state in ListofStates:
         indices = [[ state for day in range(days_ahead) ], forecast_dates]
         Y_pred_state.append( pd.DataFrame(columns=ListofCols, index=indices) )
+    # Combine all the states' predictions into a single new Dataframe of target predictions
     Y_pred = pd.concat(Y_pred_state)
     
     y_pred_list = []
     y_p_state_list = []
     
+    # For each selected state, train the model on data in the user-defined date range,
+    # and yield a forecast up to the user-defined end date
+    # given the observed slope across the training region
+    
     for state in ListofStates:
         
+        # Select training data in "train_date" ranege
         TrainData = df_owid.loc[state][train_date_start:train_date_end]
         X_train = TrainData['days_since']
         Y_train = TrainData[ListofCols]
         
+        # For each column of data for the current state,
+        # perform a linear forecast given the training date region
+        # Use the slope from the linear regression to forecast data starting at (X = train_end_date, f = y(forecast_date_end))
         for idx, col in enumerate(Y_train.columns):
             slope = getLinreg(np.array(X_train).reshape(-1, 1), Y_train[col]).coef_[0]
             train_end_point = (Y_train.index[-1], Y_train[col][-1])
             y_linreg = [ train_end_point[1] + slope*day for day in range(days_ahead) ]
             y_forecast = pd.DataFrame(data=y_linreg, columns=[col], index=forecast_dates)
             y_pred_list.append(y_forecast)
+        # After creating a Dataframe for each columns, combine them into a Dataframe for the state
         y_p_state_list.append(y_pred_list[-1].join(y_pred_list[-2]))
     
+    # Combine all the state data together
     Y_pred = pd.concat(y_p_state_list, keys=ListofStates)
     for col_idx, col in enumerate(ListofCols):
         Y_pred.rename(columns={col: ListofCols_pred[col_idx]}, inplace=True)
 
     return Y_pred, ListofCols_pred
 
-
-# Plot the data for each state, comparing actual and forecasted values
-# This uses the plotly package for interactive graphs 
-
-# def plotStatePred(df_owid, ListofStates, ListofCols, Y_pred, ListofCols_pred):
-    
-#     ## For trial, test with these lists:
-#     # ListofStates = ['Alabama', 'Texas', 'New York State']
-#     # ListofCols = ['share_doses_used', 'people_vaccinated_per_hundred']
-    
-#     print('\nGenerating plot of \ndata: {} \nfor \nstates: {}'.format(
-#         '"'+'" and "'.join(ListofCols)+'"', ', '.join(ListofStates)))
-    
-#     fig = []
-    
-#     fig = make_subplots(rows=len(ListofCols)+1,
-#                         cols=1,
-#                         shared_xaxes=True,
-#                         subplot_titles=['Efficiency of Vaccine Administration',
-#                                        'Path to Herd Immunity (Goal: 70-90%)'])
-    
-#     for col_idx, col in enumerate(ListofCols):
-        
-#         col_pred = ListofCols_pred[col_idx]
-        
-#         for state in ListofStates:
-#             data = go.Scatter(x=df_owid.loc[state]['datetime'], y=df_owid.loc[state][col], name=state+' '+col)
-#             fig.add_trace(data, row=col_idx+1, col=1)
-            
-#             data_pred = go.Scatter(x=Y_pred.loc[state].index, y=Y_pred.loc[state][col_pred], name=state+' '+col_pred)
-#             fig.add_trace(data_pred, row=col_idx+1, col=1)
-            
-#     fig.update_layout(hovermode='x')
-#     fig.update_layout(
-#         # autosize=True,
-#         # width=1000,
-#         height=3000,
-#         margin=dict(
-#         #     l=50,
-#         #     r=50,
-#             b=5,
-#             t=5,
-#             pad=100
-#         ))
-#     # fig.update_xaxes(title_text="Date", row=1, col=1)
-#     # fig.update_xaxes(title_text="Date", row=2, col=1)
-#     fig.update_yaxes(title_text="(Doses used)/(doses shipped)", row=1, col=1)
-#     fig.update_yaxes(title_text="% of state population\nvaccinated at least once", row=2, col=1)
-#     # fig.show()
-    
-#     fig_pred = fig
-    
-#     plotly.offline.plot(fig_pred)
-    
-#     return fig_pred
     
 if __name__ == '__main__':
     df_owid_orig = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/us_state_vaccinations.csv')
     df_owid, ListofCols = clean_df(df_owid_orig)
     ListofStates = getStateInput(df_owid)
+    # Let the user see some data before selecting a training date range
     fig_actual = plotStates(df_owid, ListofStates, ListofCols)
  
     train_date_start, train_date_end, forecast_date_end = getForecastDates()
     ListofCols = ['share_doses_used', 'people_vaccinated_per_hundred']
     Y_pred, ListofCols_pred = forecaster(df_owid, train_date_start, train_date_end, forecast_date_end, ListofStates, ListofCols)
     
+    # Include the predicted values in this version of the plots
     kwargs = {'Y_pred': Y_pred}
     fig_pred = plotStates(df_owid, ListofStates, ListofCols, **kwargs)
     
