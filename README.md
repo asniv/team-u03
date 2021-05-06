@@ -9,17 +9,17 @@ Packages need to run our code include:
 * Plotly
 * Sklearn
 
-The main objective of our program is to observe trends in COVID vaccine administration/efficiency and predict vaccination rates of future months.
+The main objective of our program is to observe trends of COVID vaccine efficiency in the US, where efficiency is the percentage of shipped vaccines that have been administered. We will then use these trends to predict the efficiency of future months.
 
-To run our program, take these steps:
-1. Open the 'Vaccine' folder above.
+To run our program:
+1. Open the 'Vaccine' folder in the repoisitory above.
 2. Open the 'Notebooks' folder.
-3. Run the ### file.
+3. Run ### file.
 
 From here, you will be able to observe various vaccination trends.
 
 * Model 1: The user will input a singluar state and observe the share of doses used over time.
-* Model 2: The user will have also have the option to input multiple states in order to compare trends administered doses between various locations.
-* Model 3: A side by side visual for administered doses and vaccination rate of selected states.
+* Model 2: The user will have also have the option to input multiple states in order to compare vaciination trends between various locations.
+* Model 3: A side by side visual for vaccine efficency and vaccination rate of selected states.
 
 Our program will then analyze these trends with a Linear Regression model and predict vacination rates in the future. All results are displayed on interactive plots!
