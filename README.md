@@ -1,7 +1,7 @@
 # team-u03
 M E 369P project team U03 (Spring 2021)
 
-Our program examines a dataset of COVID vaccination data in US states and federal entities. The dataset can be found here: https://github.com/owid/covid-19-data/tree/master/public/data/vaccinations
+Our program examines a set of COVID vaccination data in US states and federal entities. The dataset can be found here: https://github.com/owid/covid-19-data/tree/master/public/data/vaccinations
 
 Packages need to run our code include:
 * Numpy
