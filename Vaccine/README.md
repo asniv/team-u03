@@ -14,8 +14,8 @@ The main objective of our program is to observe trends of COVID vaccine efficien
 
 To use our program:
 
-1. Run 'https://github.com/asniv/team-u03.git' in a windows terminal.
-2. Open /Vaccine/vaccine_projector.py to start our program.
+1. Run 'git clone https://github.com/asniv/team-u03.git' in a windows terminal.
+2. Open /Vaccine/vaccine_projector.py from your cloned location to start our program.
 3. Enter desired state into program, followed by remaining states or 'done'.
 4. An interactive plot will show trends in vaccine efficiency and herd immunity for those states over the past four months.
 5. Next, we will train our data to predict future vaccine trajectory using a Linear Regression.
