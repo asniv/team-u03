@@ -12,7 +12,7 @@ Packages need to run our code include:
 The main objective of our program is to observe trends of COVID vaccine efficiency in the US, where efficiency is the percentage of shipped vaccines that have been administered. We will then use these trends to predict the efficiency of future months.
 
 To run our program:
-1. Open the 'Vaccine' folder in the repoisitory above.
+1. Open the 'Vaccine' folder in the repoisitory above or use https://github.com/asniv/team-u03/tree/main/Vaccine
 2. Open the 'Notebooks' folder.
 3. Run ### file.
 
