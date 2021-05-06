@@ -1,4 +1,4 @@
-## M E 369P
+# M E 369P Final Project
 
-### Team TrainData Final Project: COVID Vaccine Trend Projector
+## Team TrainData - COVID Vaccine Trend Projector
 
