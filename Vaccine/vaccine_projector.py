@@ -28,7 +28,7 @@ def clean_df(df_owid_orig):
     df_owid.fillna(method='ffill', inplace=True)
     
     # Examine these columns in the forecast
-    ListofCols = ['share_doeses_used', 'people_vaccinated_per_hundred']
+    ListofCols = ['share_doses_used', 'people_vaccinated_per_hundred']
     
     return df_owid, ListofCols
     
@@ -114,7 +114,7 @@ def getStateInput(df_owid):
 
 ## Plot actual state data, with option to also plot stat projected values
 
-def plotStates(df_owid, ListofStates, ListofCols, **args):
+def plotStates(df_owid, ListofStates, ListofCols, **kwargs):
     
     ## For trial, test with these lists:
     # ListofStates = ['Alabama', 'Texas', 'New York State']
@@ -141,8 +141,8 @@ def plotStates(df_owid, ListofStates, ListofCols, **args):
             data = go.Scatter(x=df_owid.loc[state]['datetime'], y=df_owid.loc[state][col], name=state+' '+col)
             fig.add_trace(data, row=col_idx+1, col=1)
             
-            if 'Y_pred' in args:
-                Y_pred = args['Y_pred']
+            if 'Y_pred' in kwargs:
+                Y_pred = kwargs['Y_pred']
                 data_pred = go.Scatter(x=Y_pred.loc[state].index, y=Y_pred.loc[state][col_pred], name=state+' '+col_pred)
                 fig.add_trace(data_pred, row=col_idx+1, col=1)
             
@@ -376,9 +376,12 @@ if __name__ == '__main__':
     df_owid_orig = pd.read_csv('https://raw.githubusercontent.com/owid/covid-19-data/master/public/data/vaccinations/us_state_vaccinations.csv')
     df_owid, ListofCols = clean_df(df_owid_orig)
     ListofStates = getStateInput(df_owid)
-    fig_actual = plotStates(df_owid, ListofStates, ListofCols, Y_pred, ListofCols_pred)
+    fig_actual = plotStates(df_owid, ListofStates, ListofCols)
+ 
     train_date_start, train_date_end, forecast_date_end = getForecastDates()
     ListofCols = ['share_doses_used', 'people_vaccinated_per_hundred']
     Y_pred, ListofCols_pred = forecaster(df_owid, train_date_start, train_date_end, forecast_date_end, ListofStates, ListofCols)
-    fig_pred = plotStates(df_owid, ListofStates, ListofCols, Y_pred)
+    
+    kwargs = {'Y_pred': Y_pred}
+    fig_pred = plotStates(df_owid, ListofStates, ListofCols, **kwargs)
     
