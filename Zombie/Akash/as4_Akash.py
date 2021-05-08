@@ -99,11 +99,11 @@ class ZombieCharacter(ICharacter):
                     dist = math.hypot(obj_pos_x - target_pos_x, obj_pos_y - target_pos_y) # get distance from attacker to target
                     scale_factor = 1.0 / math.exp(dist) # attack damage scale factor
                     id_pos.append([target_id, scale_factor, target_pos]) # append the current target ID and damage scale factor to the collection
-                    print('We can see Player {}'.format(target_id))
+                    # print('We can see Player {}'.format(target_id))
                 
             id_pos.sort(key = lambda x: x[1], reverse=True) # sort list from highest to lowest attack scale factor
             
-            print(id_pos)
+            # print(id_pos)
             
             return id_pos
         
@@ -215,7 +215,7 @@ class ZombieCharacter(ICharacter):
         if (self.getHealth() <= damage_threshold) and (self.num_of['heal'] < 5):
             # If player health is below the safe health threshold and has healed fewer than 5 times so far
             reset_round(self, 'heal')
-            print('HEAL 99!')
+            # print('HEAL 99!')
             return HealEvent(self)
         
         
@@ -225,12 +225,12 @@ class ZombieCharacter(ICharacter):
                 id_pos = calc(self, scan_results, obj_pos)
                 if len(id_pos) >= 1: # and if there is at least one zombie in the scan data
                     
-                    print('Damage we can do', self.getHealth()*id_pos[0][1])
+                    # print('Damage we can do', self.getHealth()*id_pos[0][1])
                     
                     if self.getHealth()*id_pos[0][1] > 0: # If the damage we'll inflict is higher than the user-defined threshold
                         reset_round(self, 'attack') # note that we're doing an AttackEvent
                         # print('ATTACK 111!')
-                        return AttackEvent(self, id_pos[0][1]) # then AttackEvent
+                        return AttackEvent(self, id_pos[0][0]) # then AttackEvent
                     else: # Else, if our damage is not high enough
                     # (but it's still been at most 2 rounds since last ScanEvent and we saw a zombie)
                         # Then we do a MoveEvent
@@ -334,11 +334,11 @@ class PlayerCharacter(ICharacter):
                 dist = math.hypot(obj_pos_x - target_pos_x, obj_pos_y - target_pos_y) # get distance from attacker to target
                 scale_factor = 1.0 / math.exp(dist) # attack damage scale factor
                 id_pos.append([target_id, scale_factor, target_pos]) # append the current target ID and damage scale factor to the collection
-                print('We can see Zombie {}'.format(target_id))
+                # print('We can see Zombie {}'.format(target_id))
                 
             id_pos.sort(key = lambda x: x[1], reverse=True) # sort list from highest to lowest attack scale factor
             
-            print(id_pos)
+            # print(id_pos)
             
             return id_pos
         
@@ -434,7 +434,8 @@ class PlayerCharacter(ICharacter):
                 opponent_max_health = 100 # show zombies' max health
             else: # If we're a zombie
                 opponent_max_health = 1000 # show player's max health
-            damage_threshold = id_pos[0][1]*opponent_max_health + self.getInitHealth() * 0.02
+            # damage_threshold = id_pos[0][1]*opponent_max_health + self.getInitHealth() * 0.02
+            damage_threshold = 40
             # find max factor of damage that a zombie could inflict given the positions, excluding factor of health
             # also account for health decrement of each round
             
@@ -443,13 +444,13 @@ class PlayerCharacter(ICharacter):
             # print('no zombies in range')
             damage_threshold = self.getInitHealth() * 0.1
         
-        print('Damage threshold:', damage_threshold)
+        # print('Damage threshold:', damage_threshold)
         
         # If health is below a safe level, given zombie proximity, then HealEvent
         if (self.getHealth() <= damage_threshold) and (self.num_of['heal'] < 5):
             # If player health is below the safe health threshold and has healed fewer than 5 times so far
             reset_round(self, 'heal')
-            print('HEAL 99!')
+            # print('HEAL 99!')
             return HealEvent(self)
         
         
@@ -459,12 +460,13 @@ class PlayerCharacter(ICharacter):
                 id_pos = calc(self, scan_results, obj_pos)
                 if len(id_pos) >= 1: # and if there is at least one zombie in the scan data
                     
-                    print('Damage we can do', self.getHealth()*id_pos[0][1])
+                    # print('Damage we can do', self.getHealth()*id_pos[0][1])
                     
-                    if self.getHealth()*id_pos[0][1] > 5: # If the damage we'll inflict is higher than the user-defined threshold
+                    if self.getHealth()*id_pos[0][1] > 35: # If the damage we'll inflict is higher than the user-defined threshold
                         reset_round(self, 'attack') # note that we're doing an AttackEvent
-                        # print('ATTACK 111!')
-                        return AttackEvent(self, id_pos[0][1]) # then AttackEvent
+                        print(id_pos[0][0])
+                        print('ATTACK 111!')
+                        return AttackEvent(self, id_pos[0][0]) # then AttackEvent
                     else: # Else, if our damage is not high enough
                     # (but it's still been at most 2 rounds since last ScanEvent and we saw a zombie)
                         # Then we do a MoveEvent
